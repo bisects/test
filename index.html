@@ -1,0 +1,169 @@
+<html><head>
+        <title>BonziWORLD</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="description" content="An online BonziBUDDY and Windows XP themed chatroom with loose rules and a growing community!">
+        <meta name="keywords" content="BonziBUDDY, BonziWORLD, Chat, Windows XP">
+        <meta name="author" content="Fune">
+        <link rel="icon" href="images/favicon.png">
+        <link rel="preload" href="/Tahoma.woff" as="font" crossorigin="anonymous" type="font/woff">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/all.min.css">
+        <link id="theme" rel="stylesheet" href="css/purple.css">
+        <script src="js/socket.io.js"></script>
+        <script src="js/speakClient.js"></script>
+        <script src="js/cmenu.js"></script>
+        <script src="js/create.js"></script>
+	    <script src="./cordova.js"></script>
+        <script src="js/script.js"></script>
+        <script src="js/pro.min.js" crossorigin="anonymous"></script>
+        <script async="" src="js/adsbygoogle.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="login">
+            <!--Decoration-->
+            <div id="ad_bar">
+                <center>
+                  <img src="./img/ads/beta_app.png" style="display:none;" id="betaapp">
+                </center>
+            </div>
+            <div id="top_bar"><div></div></div>
+            <div id="bottom_bar"><div></div></div>
+            <div id="divider"></div>
+            <div id="blur"></div>
+            <img id="logo_login" src="images/logo_login.png">
+            <img id="logo_mobile" src="images/logo_mobile.png">
+
+            <!--Login Card-->
+            <div id="loading">loading</div>
+            <div id="login_card">
+                <div id="card_border">
+                    <form id="card_login" action="javascript:">
+                        <input id="nickname" placeholder="Nickname">
+                        <input id="room" placeholder="Room ID (Optional)">
+                        <!--Since it's complex the button is an image-->
+                        <div id="login_button"></div>
+                        <!--HACKY SOLUTION ALERT! Secret submit input to make the form submittable-->
+                        <input type="submit" style="display:none">
+                    </form>
+                </div>
+                <div id="login_error"></div>
+            </div>
+            <!--README and Version-->
+            <div id="readme_block">
+                Welcome to BonziWORLD! <a href="https://wiki.bonziworld.org" target="_blank">Wiki</a><hr>
+                <a href="./readme.html" target="_blank">README/HELP</a> Â&nbsp;
+                <a href="https://discord.gg/Yuphr2bYr5" target="_blank">Discord Server</a> Â&nbsp;
+                <a href="https://place.bonziworld.org/" target="_blank">FunyPlace (UPDATED)</a><br>
+                <a href="https://wiki.bonziworld.org/Changelog" target="_blank">Changelog</a> Â&nbsp; <a href="https://bonziworld.org/text" target="_blank">Text Theme</a>
+            </div>
+            <div id="version">Version 7.5.5</div>
+
+
+            <!--Very hacky method of preloading-->
+            <div id="preload" style="display: none">
+                <img src="images/desktop_logo.png">
+                <img src="images/desktop_bg.png">
+                <img src="images/bubble_tail_r.png">
+                <img src="images/bubble_tail_l.png">
+                <img src="images/bubble_tail_t.png">
+                <img src="images/bubble_tail_b.png">
+                <img src="images/start.png">
+                <img src="images/login_button.png">
+
+
+                <img src="images/peedy.png">
+                <img src="images/purple.png">
+                <img src="images/clippy.png">
+                <img src="images/blue.png">
+                <img src="images/pink.png">
+                <img src="images/red.png">
+                <img src="images/black.png">
+                <img src="images/brown.png">
+                <img src="images/green.png">
+                <img src="images/cyan.png">
+                <img src="images/orange.png">
+                <img src="images/yellow.png">
+                <img src="images/white.png">
+                <img src="images/jew.png">
+                <img src="images/allah.png">
+                <img src="images/rabbi.png">
+                <img src="images/floyd.png">
+                <img src="images/troll.png">
+                <img src="images/pope.png">
+                <img src="images/king.png">
+                <img src="./img/agents/jabba.png">
+                <img src="images/blessed.png">
+            </div>
+        </div>
+        <div id="content" draggable="false">
+            <div id="bg" draggable="false"></div>
+            <canvas id="bonzicanvas" style="width: 100%; height: 100%; z-index: -20; left: 0; top: 0; position: absolute;"></canvas>
+            <div id="chatbar_cont">
+                <div id="talkcard" style="display: none;">Debug text. Report to Fune.</div>
+                <div id="send_button"><span>send</span></div>
+                <input id="chatbar" placeholder="Enter a message">
+                <div id="tile"></div>
+            </div>
+            <div id="agent_content">
+            </div>
+            <div id="room_info">
+                Room ID - <span id="room_name">???</span><br>
+                This room is <span id="room_priv">???</span><br>
+                Member Count: <span id="room_count">???</span>
+                <span id="room_owner" style="display: none;">You are the owner of this room!</span>
+            </div>
+
+
+            <!--Message Logger-->
+            <div id="logshow">
+              <center><img src="images/log_button.webp"></center>
+              Message Log
+            </div>
+            <div id="log_cont" style="display:none;">
+                <p id="log_title">BonziLOGâ„¢<button class="log_close" id="log_close"></button></p>
+                <div id="log_body">
+                    <p>Welcome to BonziWORLD!</p>
+                </div>
+            </div>
+        </div>
+
+        <!--This includes ALL error types-->
+        <div id="error_page" style="display: none;">
+            <div class="error_message" id="error_disconnect" style="display:none;">
+                <img src="images/error_disconnect.png"><br>
+                <h1>BonziWORLD.exe has encountered an error and needs to close.</h1>
+                Nah, but seriously there was an error and you got disconnected from the server. Chances are, your internet just died out for a brief moment or your device went to sleep. Otherwise the server just screwed up.<br><br>
+                You will automatically reconnect. If that doesn't work try to Reload<br><br>
+                <a href="/">Reload?</a><br><br>
+                Room ID - <span id="error_room">NONE</span>
+            </div>
+            <div class="error_message" id="error_restart" style="display:none;">
+                <img src="images/error_disconnect.png"><br>
+                <h1>BonziWORLD.exe is restaring</h1>
+                Fune has restarted BonziWORLD.org. Please wait patiently. It is possible that this is due to a new update on BonziWORLD.org<br><br>
+                You will automatically reconnect. If that doesn't work try to Reload<br><br>
+                <a href="/">Reload?</a><br><br>
+                Room ID - <span id="error_room">NONE</span>
+            </div>
+            <div class="error_message" id="error_kick" style="display:none;">
+                <img src="images/error_disconnect.png"><br>
+                <h1>You have been kicked.</h1>
+                You may have been kicked by a moderator, or if it was a private room, the room owner.<br><br>
+                <a href="/">Reload?</a><br><br>
+                Kicked by - <span id="error_kicker">???</span><br><br>
+                Room ID - <span id="error_room">NONE</span>
+            </div>
+            <div class="error_message" id="error_ban" style="display:none;">
+                <img src="images/error_disconnect.png"><br>
+                <h1>You have been banned.</h1>
+                This means you probably sent porn/gore, or did something illegal.<br>
+                If you didn't break the TAC, email <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1273767f7b7c52707d7c687b657d607e763c7d6075">[emailÂ&nbsp;protected]</a> with the IP below<br><br>
+                <a href="/">Reload?</a><br><br>
+                Banned by - <span id="banned_by">???</span><br><br>
+                Reason - <span id="ban_reason">???</span><br><br>
+                Your IP - <span id="own_ip">???</span><br><br>
+            </div>
+        </div>
+    <script data-cfasync="false" src="js/email-decode.min.js"></script>
+
+</body></html>
