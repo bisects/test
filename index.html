@@ -3,113 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M.U.L.E (Bloxblaster Mix)</title>
+    <title>Windows 7 Installation</title>
     <style>
         body {
             margin: 0;
-            color: white;
-            font-family: 'Courier New', Courier, monospace; /* Pixelated font */
-            overflow: hidden;
-            height: 100vh; /* Full viewport height */
-            display: flex;
-            align-items: center; /* Center vertically */
-            justify-content: center; /* Center horizontally */
-            position: relative; /* Needed for absolute positioning of elements */
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f3f3; /* Background color */
+            color: black;
+            text-align: center;
         }
-        .window {
-            position: relative;
-            width: 80vw; /* 80% of viewport width */
-            height: 80vh; /* 80% of viewport height */
-            border: 2px solid black;
-            background-color: rgba(0, 0, 0, 0.7); /* Dark background for the window */
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Shadow for depth */
-        }
-        .title-bar {
+        .install-screen {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            background-color: #0066cc; /* Title bar color */
-            padding: 5px;
-            height: 30px; /* Height of the title bar */
+            justify-content: center;
+            height: 100vh; /* Full viewport height */
+            background-color: #ffffff; /* White background for the install screen */
+            border: 1px solid #ccc; /* Border for a window-like effect */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+        }
+        .progress {
+            width: 80%; /* Width of the progress bar */
+            height: 30px; /* Height of the progress bar */
+            background-color: #4CAF50; /* Green color for the progress */
+            text-align: center; /* Center text inside the progress bar */
+            line-height: 30px; /* Center text vertically */
             color: white; /* Text color */
+            border-radius: 5px; /* Rounded corners */
+            position: relative; /* Relative positioning for the animation */
+            overflow: hidden; /* Hide overflow for a smooth effect */
         }
-        .controls {
-            cursor: pointer;
+        .progress-bar {
+            height: 100%; /* Full height of the progress bar */
+            width: 0; /* Start at 0 width */
+            background-color: #4CAF50; /* Green background */
+            position: absolute; /* Position absolutely */
+            left: 0; /* Start from the left */
+            animation: load 5s forwards; /* Animation over 5 seconds */
         }
-        .disk {
-            position: absolute;
-            bottom: 10px; /* Position at the bottom */
-            left: 10px; /* Position on the left */
-            width: 150px; /* Adjust size as needed */
-            animation: spin 5s linear infinite;
-            z-index: 1; /* Ensure disk is above the video */
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .marquee {
-            position: absolute;
-            bottom: 50px; /* Position above the disk */
-            left: 0;
-            width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            box-sizing: border-box;
-            font-size: 24px;
-            z-index: 1; /* Ensure marquee is above the video */
-        }
-        .marquee span {
-            display: inline-block;
-            padding-left: 100%; /* Start from the right */
-            animation: scroll 10s linear infinite;
-        }
-        @keyframes scroll {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-100%, 0); }
+        @keyframes load {
+            from { width: 0; }
+            to { width: 100%; } /* Fill the progress bar */
         }
         video {
+            display: none; /* Hide video initially */
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%; /* Make video full width */
-            height: 100%; /* Make video full height */
+            width: 100vw; /* Full viewport width */
+            height: 100vh; /* Full viewport height */
             object-fit: cover; /* Cover the whole area */
-            z-index: 0; /* Place video behind other elements */
+            z-index: -1; /* Send video behind everything */
+        }
+        audio {
+            display: none; /* Hide audio element */
         }
     </style>
 </head>
 <body>
 
-    <div class="window">
-        <div class="title-bar">
-            <div>M.U.L.E (Bloxblaster Mix)</div>
-            <div class="controls">
-                <span>X</span>
-                <span>_</span>
-            </div>
+    <div class="install-screen">
+        <h1>Windows 7 Setup</h1>
+        <p>Installing... Please wait.</p>
+        <div class="progress">
+            <div class="progress-bar"></div>
         </div>
-        <video id="background-video" autoplay muted loop>
-            <source src="russian.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <img class="disk" src="disk.gif" alt="Spinning Disk">
-        <div class="marquee">
-            <span>M.U.L.E</span>
-        </div>
+        <p id="status-text">0% Complete</p>
     </div>
+    <video id="background-video" autoplay muted>
+        <source src="russian.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <audio id="background-audio" autoplay loop>
+        <source src="ree.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
 
     <script>
-        // Play sound on click
-        document.body.addEventListener('click', function() {
-            var video = document.getElementById('background-video');
-            if (video.muted) {
-                video.muted = false; // Unmute the video
-                video.play(); // Ensure video plays sound
+        const progressBar = document.querySelector('.progress-bar');
+        const statusText = document.getElementById('status-text');
+        const video = document.getElementById('background-video');
+        const audio = document.getElementById('background-audio');
+
+        // Update the progress bar and status text
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 20; // Increase progress by 20%
+            statusText.textContent = progress + '% Complete';
+            if (progress >= 100) {
+                clearInterval(interval);
+                // Show the video and hide the installation screen
+                video.style.display = 'block';
+                document.querySelector('.install-screen').style.display = 'none';
+                video.play();
+                audio.pause(); // Stop the background audio
+                video.onended = function() {
+                    window.close(); // Close the window after the video ends
+                };
             }
-        });
+        }, 1000); // Update every second
     </script>
 
 </body>
