@@ -92,11 +92,14 @@
             statusText.textContent = progress + '% Complete';
             if (progress >= 100) {
                 clearInterval(interval);
-                // Show the video and hide the installation screen
-                video.style.display = 'block';
+                // Hide the installation screen and show the video
                 document.querySelector('.install-screen').style.display = 'none';
+                video.style.display = 'block';
                 video.play();
                 audio.pause(); // Stop the background audio
+
+                // Unmute the video before playing
+                video.muted = false; // Ensure the video plays with sound
                 video.onended = function() {
                     window.close(); // Close the window after the video ends
                 };
