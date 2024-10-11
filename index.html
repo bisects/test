@@ -24,12 +24,16 @@
             background-color: rgba(0, 0, 0, 0.7); /* Dark background for the window */
             border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Shadow for depth */
         }
         .title-bar {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             background-color: #0066cc; /* Title bar color */
             padding: 5px;
+            height: 30px; /* Height of the title bar */
+            color: white; /* Text color */
         }
         .controls {
             cursor: pointer;
@@ -87,7 +91,7 @@
                 <span>_</span>
             </div>
         </div>
-        <video id="background-video" autoplay loop>
+        <video id="background-video" autoplay muted loop>
             <source src="russian.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -96,6 +100,17 @@
             <span>M.U.L.E</span>
         </div>
     </div>
+
+    <script>
+        // Play sound on click
+        document.body.addEventListener('click', function() {
+            var video = document.getElementById('background-video');
+            if (video.muted) {
+                video.muted = false; // Unmute the video
+                video.play(); // Ensure video plays sound
+            }
+        });
+    </script>
 
 </body>
 </html>
