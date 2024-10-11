@@ -7,7 +7,6 @@
     <style>
         body {
             margin: 0;
-            background: #00BFFF; /* Bright blue for Windows XP feel */
             color: white;
             font-family: 'Courier New', Courier, monospace; /* Pixelated font */
             overflow: hidden;
@@ -15,6 +14,7 @@
             display: flex;
             align-items: center; /* Center vertically */
             justify-content: center; /* Center horizontally */
+            position: relative; /* Needed for absolute positioning of elements */
         }
         .window {
             position: relative;
@@ -36,11 +36,11 @@
         }
         .disk {
             position: absolute;
-            left: 20%;
-            top: 50%;
-            transform: translateY(-50%);
+            bottom: 10px; /* Position at the bottom */
+            left: 10px; /* Position on the left */
             width: 150px; /* Adjust size as needed */
             animation: spin 5s linear infinite;
+            z-index: 1; /* Ensure disk is above the video */
         }
         @keyframes spin {
             from { transform: rotate(0deg); }
@@ -48,13 +48,14 @@
         }
         .marquee {
             position: absolute;
-            bottom: 10px; /* Position near the bottom */
+            bottom: 50px; /* Position above the disk */
             left: 0;
             width: 100%;
             white-space: nowrap;
             overflow: hidden;
             box-sizing: border-box;
             font-size: 24px;
+            z-index: 1; /* Ensure marquee is above the video */
         }
         .marquee span {
             display: inline-block;
@@ -65,9 +66,23 @@
             0% { transform: translate(0, 0); }
             100% { transform: translate(-100%, 0); }
         }
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Make video full width */
+            height: 100%; /* Make video full height */
+            object-fit: cover; /* Cover the whole area */
+            z-index: 0; /* Place video behind other elements */
+        }
     </style>
 </head>
 <body>
+
+    <video autoplay muted loop>
+        <source src="russian.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 
     <div class="window">
         <div class="title-bar">
