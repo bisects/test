@@ -39,11 +39,7 @@
             background-color: #4CAF50; /* Green background */
             position: absolute; /* Position absolutely */
             left: 0; /* Start from the left */
-            animation: load 5s forwards; /* Animation over 5 seconds */
-        }
-        @keyframes load {
-            from { width: 0; }
-            to { width: 100%; } /* Fill the progress bar */
+            transition: width 0.5s; /* Smooth transition for the progress */
         }
         video {
             display: none; /* Hide video initially */
@@ -85,11 +81,16 @@
         const video = document.getElementById('background-video');
         const audio = document.getElementById('background-audio');
 
+        // Set the total duration of the installation (in seconds)
+        const totalDuration = 30; // Change this value according to the length of ree.mp3
+
         // Update the progress bar and status text
         let progress = 0;
         const interval = setInterval(() => {
-            progress += 20; // Increase progress by 20%
-            statusText.textContent = progress + '% Complete';
+            progress += (100 / totalDuration); // Increase progress proportionally to totalDuration
+            statusText.textContent = Math.round(progress) + '% Complete';
+            progressBar.style.width = Math.round(progress) + '%';
+
             if (progress >= 100) {
                 clearInterval(interval);
                 // Hide the installation screen and show the video
