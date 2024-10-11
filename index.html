@@ -3,109 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows 7 Installation</title>
+    <title>Windows XP Horror</title>
     <style>
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
-            background-color: #f3f3f3; /* Background color */
-            color: black;
-            text-align: center;
+            background-image: url('creepy_wallpaper.jpg'); /* Replace with your creepy wallpaper */
+            background-size: cover;
+            color: white;
+            overflow: hidden; /* Prevent scrollbars */
         }
-        .install-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh; /* Full viewport height */
-            background-color: #ffffff; /* White background for the install screen */
-            border: 1px solid #ccc; /* Border for a window-like effect */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
-        }
-        .progress {
-            width: 80%; /* Width of the progress bar */
-            height: 30px; /* Height of the progress bar */
-            background-color: #4CAF50; /* Green color for the progress */
-            text-align: center; /* Center text inside the progress bar */
-            line-height: 30px; /* Center text vertically */
-            color: white; /* Text color */
-            border-radius: 5px; /* Rounded corners */
-            position: relative; /* Relative positioning for the animation */
-            overflow: hidden; /* Hide overflow for a smooth effect */
-        }
-        .progress-bar {
-            height: 100%; /* Full height of the progress bar */
-            width: 0; /* Start at 0 width */
-            background-color: #4CAF50; /* Green background */
-            position: absolute; /* Position absolutely */
-            left: 0; /* Start from the left */
-            transition: width 0.5s; /* Smooth transition for the progress */
-        }
-        video {
-            display: none; /* Hide video initially */
+        .popup {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw; /* Full viewport width */
-            height: 100vh; /* Full viewport height */
-            object-fit: cover; /* Cover the whole area */
-            z-index: -1; /* Send video behind everything */
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid red;
+            padding: 20px;
+            width: 300px;
+            display: none; /* Hidden by default */
+            z-index: 10;
         }
-        audio {
-            display: none; /* Hide audio element */
+        .popup h2 {
+            margin: 0;
+        }
+        .jumpscare {
+            display: none; /* Hidden by default */
+            position: absolute;
+            width: 100vw; /* Full screen */
+            height: 100vh;
+            background: url('jumpscare_image.jpg') no-repeat center center; /* Replace with your jumpscare image */
+            background-size: cover;
+            z-index: 20;
         }
     </style>
 </head>
 <body>
 
-    <div class="install-screen">
-        <h1>Windows 7 Setup</h1>
-        <p>Installing... Please wait.</p>
-        <div class="progress">
-            <div class="progress-bar"></div>
-        </div>
-        <p id="status-text">0% Complete</p>
+    <div class="popup" id="popup1">
+        <h2>System Warning!</h2>
+        <p>Your system has encountered a critical error!</p>
+        <button onclick="closePopup('popup1')">OK</button>
     </div>
-    <video id="background-video" autoplay muted>
-        <source src="russian.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-    <audio id="background-audio" autoplay loop>
-        <source src="ree.mp3" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio>
+
+    <div class="jumpscare" id="jumpscare">
+        <script>
+            setTimeout(() => {
+                document.getElementById('jumpscare').style.display = 'block';
+                document.getElementById('audio').play(); // Play jumpscare sound
+            }, 5000); // Show jumpscare after 5 seconds
+        </script>
+    </div>
+
+    <audio id="audio" src="jumpscare_sound.mp3" preload="auto"></audio>
 
     <script>
-        const progressBar = document.querySelector('.progress-bar');
-        const statusText = document.getElementById('status-text');
-        const video = document.getElementById('background-video');
-        const audio = document.getElementById('background-audio');
+        function showPopup(popupId) {
+            document.getElementById(popupId).style.display = 'block';
+        }
 
-        // Set the total duration of the installation (in seconds)
-        const totalDuration = 30; // Change this value according to the length of ree.mp3
+        function closePopup(popupId) {
+            document.getElementById(popupId).style.display = 'none';
+        }
 
-        // Update the progress bar and status text
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += (100 / totalDuration); // Increase progress proportionally to totalDuration
-            statusText.textContent = Math.round(progress) + '% Complete';
-            progressBar.style.width = Math.round(progress) + '%';
-
-            if (progress >= 100) {
-                clearInterval(interval);
-                // Hide the installation screen and show the video
-                document.querySelector('.install-screen').style.display = 'none';
-                video.style.display = 'block';
-                audio.pause(); // Stop the background audio
-                video.play(); // Play the video
-
-                // Ensure the video plays with sound
-                video.muted = false; // Unmute the video
-                video.onended = function() {
-                    window.close(); // Close the window after the video ends
-                };
+        // Randomly show popup when mouse moves
+        document.addEventListener('mousemove', function(event) {
+            if (Math.random() < 0.05) { // 5% chance to show popup
+                showPopup('popup1');
             }
-        }, 1000); // Update every second
+        });
+
+        // Hide jumpscare on click
+        document.addEventListener('click', function() {
+            document.getElementById('jumpscare').style.display = 'none';
+        });
     </script>
 
 </body>
