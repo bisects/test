@@ -95,11 +95,11 @@
                 // Hide the installation screen and show the video
                 document.querySelector('.install-screen').style.display = 'none';
                 video.style.display = 'block';
-                video.play();
                 audio.pause(); // Stop the background audio
+                video.play(); // Play the video
 
-                // Unmute the video before playing
-                video.muted = false; // Ensure the video plays with sound
+                // Ensure the video plays with sound
+                video.muted = false; // Unmute the video
                 video.onended = function() {
                     window.close(); // Close the window after the video ends
                 };
